@@ -27,11 +27,11 @@
     "shippingCost": {
       "type": "decimal"
     },
-    "orderStatus": {
+    "statusOrder": {
       "type": "enumeration",
       "enum": [
         "waitingPayment",
-        "paid",
+        "purchased",
         "onDelivery",
         "delivered",
         "cancel"

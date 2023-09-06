@@ -20,9 +20,9 @@ module.exports = createCoreController(
       let params = {};
 
       if (request.transaction_status == "settlement") {
-        params = { data: { orderStatus: "paid" } };
+        params = { data: { statusOrder: "purchased" } };
       } else {
-        params = { data: { orderStatus: "cancel" } };
+        params = { data: { statusOrder: "cancel" } };
       }
 
       let updateOrder = await strapi
