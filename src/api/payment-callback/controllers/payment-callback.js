@@ -10,16 +10,21 @@ module.exports = createCoreController(
   "api::payment-callback.payment-callback",
   ({ strapi }) => ({
     async create(ctx) {
-      let request = ctx.request.body;
-      console.log("request: ", request);
+      let requestData = ctx.request.body;
+      console.log("request: ", requestData);
 
       let order = await strapi
         .service("api::order.order")
-        .findOne(request.order_id);
+        .findOne(requestData.order_id);
+      let inputData = { data: { history: requestData } };
+
+      const result = await strapi
+        .service("api::payment-callback.payment-callback")
+        .create(inputData);
 
       let params = {};
 
-      if (request.transaction_status == "settlement") {
+      if (requestData.transaction_status == "settlement") {
         params = { data: { statusOrder: "purchased" } };
       } else {
         params = { data: { statusOrder: "cancel" } };
@@ -27,9 +32,9 @@ module.exports = createCoreController(
 
       let updateOrder = await strapi
         .service("api::order.order")
-        .update(request.order_id, params);
+        .update(requestData.order_id, params);
 
-      console.log("update data:", updateOrder);
+      console.log("update data: ", updateOrder);
 
       return { data: updateOrder };
     },
